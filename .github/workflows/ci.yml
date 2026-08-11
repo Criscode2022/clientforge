@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install
+        run: npm install
+
+      - name: Build API
+        run: npm run build --workspace=api
+
+      - name: Build Web
+        run: npm run build --workspace=web
+
+      - name: Start API for smoke tests
+        run: |
+          cd apps/api
+          PORT=3001 HOST=127.0.0.1 node dist/main.js > /tmp/api.log 2>&1 &
+          for i in $(seq 1 60); do
+            if curl -sf http://127.0.0.1:3001/api/health; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "API failed to start"
+          cat /tmp/api.log
+          exit 1
+
+      - name: API smoke tests
+        run: node scripts/api-smoke.mjs http://127.0.0.1:3001
