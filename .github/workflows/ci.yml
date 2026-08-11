@@ -29,9 +29,11 @@ jobs:
       - name: Start API for smoke tests
         run: |
           cd apps/api
+          # API-only mode for smoke (static SPA optional)
           PORT=3001 HOST=127.0.0.1 node dist/main.js > /tmp/api.log 2>&1 &
-          for i in $(seq 1 60); do
+          for i in $(seq 1 90); do
             if curl -sf http://127.0.0.1:3001/api/health; then
+              echo
               exit 0
             fi
             sleep 1

@@ -21,15 +21,17 @@ async function bootstrap() {
 
   const staticRoot = webRoot;
   if (staticRoot && existsSync(join(staticRoot, 'index.html'))) {
-    const expressApp = app.getHttpAdapter().getInstance();
-    expressApp.get(
-      '*',
+    // Express 5-safe SPA fallback (no bare "*" routes)
+    app.use(
       (
-        req: { path: string },
+        req: { method: string; path: string },
         res: { sendFile: (p: string) => void },
         next: () => void,
       ) => {
+        if (req.method !== 'GET' && req.method !== 'HEAD') return next();
         if (req.path.startsWith('/api')) return next();
+        // Let static assets 404 fall through to index for client routes only
+        if (req.path.includes('.') && !req.path.endsWith('.html')) return next();
         res.sendFile(join(staticRoot, 'index.html'));
       },
     );
