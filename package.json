@@ -1,0 +1,37 @@
+{
+  "name": "clientforge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ClientForge — full-stack client, project & invoice OS (Angular + NestJS + Neon + Tailwind)",
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c teal,cyan \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "npm run start:dev --workspace=api",
+    "dev:web": "npm run start --workspace=web",
+    "build": "npm run build --workspace=web && npm run build --workspace=api",
+    "build:api": "npm run build --workspace=api",
+    "build:web": "npm run build --workspace=web",
+    "start": "npm run start:prod --workspace=api",
+    "start:prod": "NODE_ENV=production PORT=8080 HOST=0.0.0.0 npm run start:prod --workspace=api",
+    "test": "npm run test --workspace=api -- --passWithNoTests && node scripts/api-smoke.mjs",
+    "test:api": "node scripts/api-smoke.mjs",
+    "typecheck": "npm run build --workspace=api -- --tsc && cd apps/web && npx ng build --configuration=development --no-progress"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4",
+    "esbuild": "0.25.12",
+    "playwright": "^1.62.1"
+  },
+  "overrides": {
+    "esbuild": "0.25.12"
+  },
+  "dependencies": {
+    "rxjs": "^7.8.1"
+  }
+}

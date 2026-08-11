@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    @apply h-full bg-bg text-fg antialiased;
+  }
+
+  body {
+    @apply font-sans;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 10% -10%, rgba(20, 184, 166, 0.12), transparent 50%),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(56, 189, 248, 0.06), transparent 45%);
+    background-attachment: fixed;
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  ::selection {
+    @apply bg-primary/30 text-fg;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-border bg-surface/90 shadow-card backdrop-blur-sm;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary text-bg hover:bg-primary-dim;
+  }
+
+  .btn-secondary {
+    @apply btn border border-border bg-elevated text-fg hover:border-primary/40 hover:bg-primary-soft;
+  }
+
+  .btn-ghost {
+    @apply btn text-muted hover:bg-elevated hover:text-fg;
+  }
+
+  .btn-danger {
+    @apply btn bg-danger/15 text-danger hover:bg-danger/25;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-border bg-bg/60 px-3.5 py-2.5 text-sm text-fg placeholder:text-muted/70
+      outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20;
+  }
+
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  }
+
+  .table-wrap {
+    @apply overflow-x-auto rounded-2xl border border-border;
+  }
+
+  table.data {
+    @apply w-full min-w-[640px] text-left text-sm;
+  }
+
+  table.data thead {
+    @apply bg-elevated/80 text-xs uppercase tracking-wide text-muted;
+  }
+
+  table.data th {
+    @apply px-4 py-3 font-semibold;
+  }
+
+  table.data td {
+    @apply border-t border-border px-4 py-3 align-middle;
+  }
+
+  table.data tbody tr {
+    @apply transition hover:bg-elevated/40;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

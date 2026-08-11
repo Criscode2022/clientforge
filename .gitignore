@@ -1,0 +1,16 @@
+node_modules
+dist
+.angular
+coverage
+.tmp
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+/tmp
+_template_backup
+screenshots/*.png
+.idea
+.vscode
+*.tsbuildinfo
